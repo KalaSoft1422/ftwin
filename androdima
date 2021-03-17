@@ -1,0 +1,55 @@
+srcDir :=  ${PWD}/../src
+incDir := ${PWD}/../include
+srcs := ${srcDir}/base/ftsystem.c \
+${srcDir}/autofit/autofit.c \
+${srcDir}/base/ftinit.c \
+${srcDir}/base/ftdebug.c \
+${srcDir}/base/ftbase.c \
+${srcDir}/base/ftbbox.c \
+${srcDir}/base/ftglyph.c \
+${srcDir}/base/ftbdf.c \
+${srcDir}/base/ftbitmap.c \
+${srcDir}/base/ftcid.c \
+${srcDir}/base/ftfstype.c \
+${srcDir}/base/ftgasp.c \
+${srcDir}/base/ftgxval.c \
+${srcDir}/base/ftmm.c \
+${srcDir}/base/ftotval.c \
+${srcDir}/base/ftpatent.c \
+${srcDir}/base/ftpfr.c \
+${srcDir}/base/ftstroke.c \
+${srcDir}/base/ftsynth.c \
+${srcDir}/base/fttype1.c \
+${srcDir}/base/ftwinfnt.c \
+${srcDir}/bdf/bdf.c \
+${srcDir}/cff/cff.c \
+${srcDir}/cid/type1cid.c \
+${srcDir}/pcf/pcf.c \
+${srcDir}/pfr/pfr.c \
+${srcDir}/sfnt/sfnt.c \
+${srcDir}/psaux/psaux.x \
+${srcDir}/psnames/psnames.c \
+${srcDir}/pshinter/pshinter.c \
+${srcDir}/truetype/truetype.c \
+${srcDir}/type1/type1.c \
+${srcDir}/type42/type42.c \
+${srcDir}/winfonts/winfnt.c \
+${srcDir}/raster/raster.c \
+${srcDir}/smooth/smooth.c
+export ndkDir := /home/boom/Desktop/ndk
+export TOOLCHAIN := ${ndkDir}/toolchains/llvm/prebuilt/linux-x86_64
+export ABI := x86-64                          #change this and next line for all android architecture (diff for armabi-v7a check androidndk website)
+export TARGET :=x86_64-linux-android
+export API := 21
+export CC :=${TOOLCHAIN}/bin/${TARGET}${API}-clang
+export AR :=${TOOLCHAIN}/bin/${TARGET}-ar
+export RANLIB :=${TOOLCHAIN}/bin/${TARGET}-ranlib
+
+#BOOM += "nohtin"
+.ONESHELL:
+all:
+#	mkdir ${ABI}
+	${CC} -c ${srcs} -DANDROID_NDK -DFT2_BUILD_LIBRARY=1 -I${incDir} ${incDir}/ft2build.h -f
+	${AR} rc ./${ABI}/libfreetype210.a *.o
+	${RANLIB} ./${ABI}/libfreetype210.a
+	rm *.o
